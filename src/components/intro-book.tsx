@@ -158,17 +158,15 @@ const INTRO_CSS = `
   background:linear-gradient(90deg,#fff,#f6f5f1); border-radius:2px; opacity:0}
 .bb-intro-leaf.is-flip{animation:bb-intro-leaf 1.2s .25s cubic-bezier(.45,0,.2,1) forwards}
 @keyframes bb-intro-leaf{0%{transform:translateZ(-8px) rotateY(0); opacity:1} 100%{transform:translateZ(-8px) rotateY(-168deg); opacity:0}}
-.bb-intro-cover{position:absolute; inset:0; transform-origin:left center; transform-style:preserve-3d; transition:transform 1.5s cubic-bezier(.65,0,.35,1)}
+.bb-intro-cover{position:absolute; inset:0; transform-origin:left center; transform-style:preserve-3d; transition:transform 1.5s cubic-bezier(.65,0,.35,1); will-change:transform}
 .bb-intro-cover.is-open{transform:rotateY(-164deg)}
 .bb-intro-front,.bb-intro-back{position:absolute; inset:0; border-radius:4px 10px 10px 4px; backface-visibility:hidden; overflow:hidden}
 .bb-intro-front{background:radial-gradient(120% 90% at 30% 20%, #17868f 0%, #0E7C86 45%, #0B5F67 100%);
   box-shadow:inset 6px 0 10px rgba(0,0,0,.25), inset -1px 0 0 rgba(255,255,255,.12), 0 1px 2px rgba(15,42,58,.2)}
-.bb-intro-front::before{content:""; position:absolute; inset:0; opacity:.22; mix-blend-mode:overlay;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
 .bb-intro-back{transform:rotateY(180deg); background:linear-gradient(90deg,#f3f1ec,#fffdf8); box-shadow:inset 0 0 0 1px #e6e1d6}
-.bb-intro-foil{position:absolute; inset:-40%; background:linear-gradient(110deg,transparent 40%,rgba(241,215,126,.75) 50%,transparent 60%);
-  transform:translateX(-100%); animation:bb-intro-foil 1.3s .5s cubic-bezier(.4,0,.2,1) forwards; mix-blend-mode:screen}
-@keyframes bb-intro-foil{to{transform:translateX(100%)}}
+.bb-intro-foil{position:absolute; inset:-40%; background:linear-gradient(110deg,transparent 40%,rgba(241,215,126,.6) 50%,transparent 60%);
+  transform:translate3d(-100%,0,0); animation:bb-intro-foil 1.3s .5s cubic-bezier(.4,0,.2,1) forwards; will-change:transform}
+@keyframes bb-intro-foil{to{transform:translate3d(100%,0,0)}}
 .bb-intro-orn{position:absolute; inset:0; width:100%; height:100%; opacity:.9}
 .bb-intro-title{position:absolute; top:43%; left:0; right:0; margin:0; text-align:center; font-family:var(--font-display), Georgia, serif;
   font-size:34px; line-height:1; color:#F1D77E; text-shadow:0 1px 0 rgba(0,0,0,.35); letter-spacing:.01em}
@@ -194,7 +192,7 @@ const INTRO_CSS = `
 /* Hoja que gira sobre el lomo, como una página de verdad */
 .bb-intro-spread{perspective:1800px}
 .bb-leaf{position:absolute; top:0; bottom:0; left:50%; width:50%; transform-origin:left center; transform-style:preserve-3d;
-  animation:bb-turn 1.25s cubic-bezier(.45,.05,.25,1) forwards; z-index:2; pointer-events:none}
+  animation:bb-turn 1.1s cubic-bezier(.4,.1,.2,1) forwards; z-index:2; pointer-events:none; will-change:transform}
 .bb-leaf-face,.bb-leaf-back{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; background:#fff; overflow:hidden}
 .bb-leaf-face{display:flex; flex-direction:column; justify-content:center; padding:clamp(20px,4vw,48px); box-shadow:inset 10px 0 14px -10px rgba(15,42,58,.18)}
 .bb-leaf-back{transform:rotateY(180deg); box-shadow:inset -10px 0 14px -10px rgba(15,42,58,.18)}
