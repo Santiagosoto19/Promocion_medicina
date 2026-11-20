@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Medallon } from "@/components/clasico/ornamentos";
 
 const KEY = "bb:animaciones";
 
@@ -36,7 +37,8 @@ export function AppFooter() {
   if (pathname.startsWith("/admin")) return null;
   return (
     <footer className="border-t border-line bg-paper px-4 py-8 pb-24 text-center text-sm text-muted lg:pb-8">
-      <p className="font-hand text-xl text-primary">Bata Blanca · Universidad de Sucre · 2026</p>
+      <Medallon className="mx-auto h-16 w-16 text-[#c9a55c]" />
+      <p className="mt-3 font-hand text-xl text-primary">Bata Blanca · Universidad de Sucre · 2026</p>
       <div className="mt-3 flex flex-wrap items-center justify-center gap-3">
         <button type="button" onClick={toggle} className="rounded-full border border-line bg-white px-4 py-1.5 text-xs text-secondary transition hover:border-primary">
           ✨ Animaciones: {soft ? "suaves" : "completas"}

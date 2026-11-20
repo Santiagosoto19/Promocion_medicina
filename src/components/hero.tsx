@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { InlineEdit } from "@/components/inline-edit";
+import { Columna, Fronton, Laurel } from "@/components/clasico/ornamentos";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -80,6 +81,11 @@ export function Hero({
     <section ref={ref} className="relative isolate pt-4 pb-16">
       <div data-speed="0.2" className="glow-teal pointer-events-none absolute -top-24 left-1/2 -z-10 h-[520px] w-[520px] -translate-x-1/2 rounded-full" aria-hidden="true" />
 
+      {/* Columnas jónicas a los lados del libro (solo pantallas grandes) */}
+      <Columna className="columna-clasica pointer-events-none absolute -left-4 top-10 -z-10 hidden xl:block" alto={500} />
+      <Columna className="columna-clasica pointer-events-none absolute -right-4 top-10 -z-10 hidden xl:block" alto={500} />
+      {/* Frontón griego que remata el libro */}
+      <Fronton className="mx-auto mb-1 hidden h-12 w-56 text-[#c9a55c] sm:block" />
       <div data-speed="0.4" className="relative mx-auto grid max-w-4xl overflow-hidden rounded-[6px] bg-white shadow-[0_1px_2px_rgba(15,42,58,0.06),0_16px_40px_rgba(15,42,58,0.10),0_40px_90px_rgba(15,42,58,0.14)] sm:grid-cols-2">
         {/* Lomo del libro */}
         <span className="pointer-events-none absolute inset-y-0 left-1/2 z-10 hidden w-12 -translate-x-1/2 bg-gradient-to-r from-transparent via-secondary/10 to-transparent sm:block" aria-hidden="true" />
@@ -87,12 +93,17 @@ export function Hero({
         {/* Página izquierda: texto y cuenta regresiva */}
         <div className="flex flex-col items-center justify-center gap-6 p-7 text-center sm:p-12">
           <p data-fade className="font-hand text-xl text-muted">Promoción de Medicina, Universidad de Sucre</p>
-          <div data-fade className="w-full">
+          {/* Coronas de laurel a ambos lados del nombre de la promoción (en escritorio) */}
+          <div data-fade className="relative w-full">
+            <Laurel className="pointer-events-none absolute -left-3 top-1/2 hidden h-20 w-7 -translate-y-1/2 text-[#c9a55c] sm:block" />
+            <div className="min-w-0">
             {editable ? (
               <InlineEdit as="h1" className="gold-shine font-display text-5xl leading-[1.02] sm:text-6xl" value={title} editable onSave={saveTitle} />
             ) : (
               <h1 className="gold-shine font-display text-5xl leading-[1.02] sm:text-6xl">{title}</h1>
             )}
+            </div>
+            <Laurel espejo className="pointer-events-none absolute -right-3 top-1/2 hidden h-20 w-7 -translate-y-1/2 text-[#c9a55c] sm:block" />
           </div>
           {/* Trazo de tinta dorada que se dibuja bajo el título, como una firma. */}
           <svg data-fade viewBox="0 0 320 14" preserveAspectRatio="none" className="-mt-3 h-3 w-40 overflow-visible sm:w-56" aria-hidden="true">

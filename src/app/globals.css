@@ -377,3 +377,59 @@ button, input, select, textarea { font-family: inherit; }
   stroke-width: 2;
   stroke-dasharray: 4 3;
 }
+
+/* ——— Decoración clásica: tema y ornamentos ——— */
+:root {
+  --clasico-oro: #c9a55c;          /* dorado suave para ornamentos */
+  --clasico-oro-suave: rgba(201, 165, 92, 0.55);
+}
+
+/* Trazos que se dibujan al entrar en pantalla (ECG, greca, laurel, columnas, medallón) */
+.trazo {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: bb-draw 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: var(--demora, 0s);
+}
+
+/* Columnas laterales: aparecen con fade + desplazamiento suave */
+.columna-clasica {
+  opacity: 0.55;
+  color: var(--clasico-oro);
+  animation: clasico-entra 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes clasico-entra {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 0.55; transform: translateY(0); }
+}
+
+/* Marco de diploma: doble línea dorada */
+.marco-diploma {
+  position: relative;
+  border: 1px solid var(--clasico-oro-suave);
+  outline: 1px solid rgba(201, 165, 92, 0.25);
+  outline-offset: 6px;
+}
+
+/* Tarjetas: esquinas doradas y brillo sutil al pasar el mouse */
+.paper-card { position: relative; overflow: hidden; }
+.paper-card::before,
+.paper-card::after {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  border-color: var(--clasico-oro);
+  opacity: 0.7;
+}
+.paper-card::before { top: 6px; left: 6px; border-top: 1px solid; border-left: 1px solid; border-top-left-radius: 8px; }
+.paper-card::after { bottom: 6px; right: 6px; border-bottom: 1px solid; border-right: 1px solid; border-bottom-right-radius: 8px; }
+.paper-card:hover {
+  border-color: var(--clasico-oro-suave);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trazo { stroke-dashoffset: 0; animation: none; }
+  .columna-clasica { animation: none; opacity: 0.55; }
+}

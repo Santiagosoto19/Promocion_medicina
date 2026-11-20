@@ -22,9 +22,8 @@ export function IntroBook({ title, fotos = [] }: { title: string; fotos?: string
   const [volteo, setVolteo] = useState<number | null>(null);
 
   useEffect(() => {
-    // Siempre se muestra en cada visita. Solo se omite si el sistema pide reducir movimiento.
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
+    // Siempre se muestra en cada visita, también si el sistema pide reducir movimiento:
+    // en ese caso las reglas CSS (más abajo) quitan transiciones y animaciones, pero la secuencia aparece igual.
     setFase("entra");
     const timers: ReturnType<typeof setTimeout>[] = [
       setTimeout(() => setFase("sello"), 1100),

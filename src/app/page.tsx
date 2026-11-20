@@ -9,6 +9,7 @@ import { MedicalFloaters } from "@/components/medico/floaters";
 import { Corazon, Estetoscopio } from "@/components/medico/icons";
 import { Counter } from "@/components/motion/counter";
 import { EcgDivider } from "@/components/motion/ecg-divider";
+import { DivisorClasico } from "@/components/clasico/ornamentos";
 import { ScrollWords } from "@/components/motion/scroll-words";
 import { count } from "drizzle-orm";
 import { students as studentsTable } from "@/db/schema";
@@ -151,6 +152,15 @@ export default async function HomePage() {
               </li>
             ))}
           </ol>
+        </section>
+
+        {/* Cita del juramento hipocrático en tipografía de inscripción */}
+        <section className="mx-auto mt-20 max-w-2xl text-center">
+          <DivisorClasico />
+          <p className="mt-8 font-[family-name:var(--font-cinzel)] text-2xl leading-relaxed text-secondary sm:text-3xl">
+            «Ante todo, no hacer daño.»
+          </p>
+          <p className="mt-3 font-[family-name:var(--font-cinzel)] text-xs tracking-[0.25em] text-muted uppercase">Juramento hipocrático</p>
         </section>
 
         <section className="mx-auto mt-20 max-w-3xl text-center">
