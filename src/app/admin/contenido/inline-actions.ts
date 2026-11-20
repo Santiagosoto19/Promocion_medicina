@@ -14,6 +14,7 @@ export async function saveInlineText(field: "heroTitle" | "heroSubtitle", value:
   if (!clean) return { ok: false, error: "El texto no puede quedar vacío." };
   await db.update(siteSettings).set({ [field]: clean, updatedAt: new Date() }).where(eq(siteSettings.id, 1));
   await audit({ actor, action: "portada.texto", entity: "site_settings", detail: { field } });
+  revalidatePath("/", "layout");
   revalidatePath("/");
   return { ok: true };
 }

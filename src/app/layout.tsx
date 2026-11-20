@@ -9,6 +9,7 @@ import { SiteNav } from "@/components/site-nav";
 import { ToastProvider } from "@/components/ui/toast";
 import { CursorDot } from "@/components/cursor-dot";
 import { PublicTabBar } from "@/components/public-tab-bar";
+import { AutoActualizar } from "@/components/auto-actualizar";
 
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", display: "swap" });
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
@@ -50,6 +51,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           {children}
           <AppFooter />
           <PublicTabBar />
+          <AutoActualizar />
           <EasterEgg />
         </ToastProvider>
       </body>

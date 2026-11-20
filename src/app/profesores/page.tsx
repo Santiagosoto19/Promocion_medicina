@@ -6,7 +6,7 @@ import { PageShell } from "@/components/page-shell";
 import { RevealGroup } from "@/components/reveal-group";
 import { tiltFor } from "@/lib/tilt";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 10;
 
 export default async function ProfesoresPage() {
   const list = await db.select().from(teachers).orderBy(asc(teachers.orderIndex), asc(teachers.name));

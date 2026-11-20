@@ -176,6 +176,7 @@ export async function confirmMediaUpload(input: unknown): Promise<MediaConfirmRe
     detail: { studentId: intent.studentId, type: kind, status },
   });
 
+  revalidatePath("/", "layout");
   revalidatePath("/");
   revalidatePath("/admin/moderacion");
   return { ok: true, memoryId: memory.id, status };

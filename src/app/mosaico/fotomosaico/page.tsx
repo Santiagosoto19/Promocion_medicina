@@ -7,7 +7,7 @@ import { getSettings } from "@/lib/access";
 import { imageUrl } from "@/lib/image-sizes";
 import { Fotomosaico } from "./fotomosaico";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 10;
 
 export default async function FotomosaicoPage() {
   const settings = await getSettings();

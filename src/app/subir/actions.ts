@@ -171,6 +171,7 @@ export async function confirmPhotoUpload(input: unknown): Promise<ConfirmResult>
     detail: { studentId: intent.studentId, status },
   });
 
+  revalidatePath("/", "layout");
   revalidatePath("/");
   revalidatePath("/admin/moderacion");
   return { ok: true, memoryId: memory.id, status };

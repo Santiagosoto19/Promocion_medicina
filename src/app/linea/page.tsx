@@ -5,7 +5,7 @@ import { PageShell } from "@/components/page-shell";
 import { RevealGroup } from "@/components/reveal-group";
 import { tiltFor } from "@/lib/tilt";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 10;
 
 // Historia clínica de la promoción: hitos alternados a ambos lados de la línea, como notas en un expediente.
 export default async function LineaPage() {

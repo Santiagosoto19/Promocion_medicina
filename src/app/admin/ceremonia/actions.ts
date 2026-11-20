@@ -30,6 +30,7 @@ export async function setLiveCall(studentId: string | null): Promise<void> {
     entityId: studentId ?? undefined,
     detail: { fullName: name },
   });
+  revalidatePath("/", "layout");
   revalidatePath("/en-vivo");
   revalidatePath("/admin/ceremonia");
 }

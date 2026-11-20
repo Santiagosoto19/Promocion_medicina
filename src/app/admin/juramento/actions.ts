@@ -14,6 +14,7 @@ export async function saveOath(_prev: { ok?: boolean; error?: string } | undefin
 
   await db.update(siteSettings).set({ oathText: text || null, updatedAt: new Date() }).where(eq(siteSettings.id, 1));
   await audit({ actor, action: "juramento.guardado", entity: "site_settings", detail: { longitud: text.length } });
+  revalidatePath("/", "layout");
   revalidatePath("/juramento");
   return { ok: true };
 }

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { MemoryMedia } from "@/components/memory-media";
 import { useToast } from "@/components/ui/toast";
+import { celebrar } from "@/lib/celebrar";
 import { deleteMemory, setMemoryStatus } from "./actions";
 
 export type Item = {
@@ -42,6 +43,8 @@ export function ModeracionLista({ pendientes, ocultos, publicados = [] }: { pend
     setSeleccion(new Set());
     setOcupado(false);
     avisar(`${ids.length === 1 ? "Recuerdo" : `${ids.length} recuerdos`} ${estado === "approved" ? "aprobado" : "ocultado"}${ids.length === 1 ? "" : "s"}`, "ok");
+    // Al aprobar, se celebra; la página pública se actualiza sola (en ~30 s o al volver a la pestaña).
+    if (estado === "approved") void celebrar();
   }
 
   async function eliminar(id: string) {

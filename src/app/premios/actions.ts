@@ -40,6 +40,7 @@ export async function castVote(input: unknown): Promise<{ ok: true } | { ok: fal
 
   await db.insert(awardVotes).values({ awardId, voterStudentId, nomineeStudentId }).onConflictDoNothing();
   await audit({ actor: "estudiante", action: "premio.voto", entity: "awards", entityId: awardId, ip, detail: { voterStudentId } });
+  revalidatePath("/", "layout");
   revalidatePath("/premios");
   return { ok: true };
 }

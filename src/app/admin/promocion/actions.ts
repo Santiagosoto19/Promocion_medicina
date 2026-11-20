@@ -63,6 +63,7 @@ export async function createStudent(_prev: StudentFormState, formData: FormData)
     .returning({ id: students.id });
 
   await audit({ actor, action: "estudiante.creado", entity: "students", entityId: created.id, detail: { fullName: data.fullName } });
+  revalidatePath("/", "layout");
   revalidatePath("/subir");
   revalidatePath("/admin/promocion");
   return { ok: true };
@@ -86,6 +87,7 @@ export async function updateStudent(id: string, _prev: StudentFormState, formDat
     .where(eq(students.id, id));
 
   await audit({ actor, action: "estudiante.editado", entity: "students", entityId: id, detail: { fullName: data.fullName } });
+  revalidatePath("/", "layout");
   revalidatePath("/subir");
   revalidatePath("/admin/promocion");
   return { ok: true };
@@ -107,6 +109,7 @@ export async function deleteStudent(id: string): Promise<StudentFormState> {
 
   const [removed] = await db.delete(students).where(eq(students.id, id)).returning({ fullName: students.fullName });
   await audit({ actor, action: "estudiante.eliminado", entity: "students", entityId: id, detail: { fullName: removed?.fullName } });
+  revalidatePath("/", "layout");
   revalidatePath("/subir");
   revalidatePath("/admin/promocion");
   redirect("/admin/promocion");

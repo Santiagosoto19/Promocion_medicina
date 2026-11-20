@@ -1,12 +1,14 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sello } from "@/components/sello";
 import { loginAction, type LoginState } from "./actions";
 
 export default function AdminLoginPage() {
   const [state, formAction, pending] = useActionState<LoginState, FormData>(loginAction, undefined);
+  const [verClave, setVerClave] = useState(false);
 
   return (
     <main className="relative isolate flex min-h-dvh items-center justify-center overflow-hidden bg-paper px-4 py-12">
@@ -28,7 +30,25 @@ export default function AdminLoginPage() {
           </label>
           <label className="block">
             <span className="bb-label">Contraseña</span>
-            <input name="password" type="password" autoComplete="current-password" required placeholder="••••••••••••" className="bb-input mt-2" />
+            <span className="relative mt-2 block">
+              <input
+                name="password"
+                type={verClave ? "text" : "password"}
+                autoComplete="current-password"
+                required
+                placeholder="••••••••••••"
+                className="bb-input pr-14"
+              />
+              <button
+                type="button"
+                onClick={() => setVerClave((v) => !v)}
+                aria-label={verClave ? "Ocultar contraseña" : "Mostrar contraseña"}
+                aria-pressed={verClave}
+                className="absolute inset-y-0 right-0 flex min-h-11 min-w-11 items-center justify-center rounded-r-xl text-sm font-medium text-primary hover:text-secondary"
+              >
+                {verClave ? <EyeOff size={20} aria-hidden="true" /> : <Eye size={20} aria-hidden="true" />}
+              </button>
+            </span>
           </label>
 
           {state?.error && (

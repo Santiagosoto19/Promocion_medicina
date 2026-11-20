@@ -30,6 +30,7 @@ export async function saveSettings(_prev: SettingsState, formData: FormData): Pr
       moderationRequired: { from: current.moderationRequired, to: moderationRequired },
     },
   });
+  revalidatePath("/", "layout");
   revalidatePath("/subir");
   revalidatePath("/admin/ajustes");
   return { ok: "Ajustes guardados." };

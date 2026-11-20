@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { students } from "@/db/schema";
 import { SubirForm } from "./subir-form";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 10;
 
 export default async function SubirPage() {
   const list = await db

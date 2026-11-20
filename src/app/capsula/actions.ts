@@ -30,6 +30,7 @@ export async function saveCapsuleLetter(input: unknown): Promise<{ ok: true; sta
   const status = settings.moderationRequired ? "pending" : "approved";
   const [row] = await db.insert(capsuleLetters).values({ studentId, body, status }).returning({ id: capsuleLetters.id });
   await audit({ actor: "estudiante", action: "capsula.guardada", entity: "capsule_letters", entityId: row.id, ip, detail: { studentId, status } });
+  revalidatePath("/", "layout");
   revalidatePath("/capsula");
   revalidatePath("/admin/moderacion");
   return { ok: true, status };

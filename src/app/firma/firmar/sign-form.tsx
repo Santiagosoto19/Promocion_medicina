@@ -1,6 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/toast";
+import { celebrar } from "@/lib/celebrar";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { saveSignature } from "./actions";
 
@@ -15,6 +18,8 @@ export function SignForm({ students }: { students: StudentOption[] }) {
   const [phrase, setPhrase] = useState("");
   const [message, setMessage] = useState<{ type: "ok" | "error"; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
+  const { avisar } = useToast();
+  const router = useRouter();
 
   function toNormalized(e: React.PointerEvent<HTMLCanvasElement>): Point {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -81,10 +86,11 @@ export function SignForm({ students }: { students: StudentOption[] }) {
     if (!result.ok) return setMessage({ type: "error", text: result.error });
     clear();
     setPhrase("");
-    setMessage({
-      type: "ok",
-      text: result.status === "pending" ? "¡Firma guardada! Aparecerá en la bata cuando el admin la apruebe." : "¡Firma guardada en la bata!",
-    });
+    const texto = result.status === "pending" ? "¡Firma guardada! Aparecerá en la bata cuando el admin la apruebe." : "¡Firma guardada en la bata!";
+    setMessage({ type: "ok", text: texto });
+    avisar(texto, "ok");
+    void celebrar("fiesta");
+    router.refresh();
   }
 
   return (

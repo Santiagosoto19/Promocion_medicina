@@ -24,6 +24,7 @@ export type GaleriaItem = {
   publicId: string | null;
   width: number | null;
   height: number | null;
+  studentId: string;
   studentName: string;
   nickname: string | null;
   counts: Record<string, number>;

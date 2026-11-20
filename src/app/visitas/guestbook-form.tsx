@@ -1,6 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/toast";
+import { celebrar } from "@/lib/celebrar";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signGuestbook } from "./actions";
 
@@ -12,6 +15,8 @@ export function GuestbookForm() {
   const [body, setBody] = useState("");
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  const { avisar } = useToast();
+  const router = useRouter();
 
   async function submit() {
     setBusy(true);
@@ -21,7 +26,11 @@ export function GuestbookForm() {
     setAuthorName("");
     setRelationship("");
     setBody("");
-    setMsg({ ok: true, text: "¡Gracias! Lo revisará el admin antes de publicarlo." });
+    const texto = "¡Gracias! Lo revisará el admin antes de publicarlo.";
+    setMsg({ ok: true, text: texto });
+    avisar(texto, "ok");
+    void celebrar();
+    router.refresh();
   }
 
   return (

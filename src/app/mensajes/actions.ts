@@ -48,6 +48,7 @@ export async function saveMessage(input: unknown): Promise<MessageResult> {
     .returning({ id: memories.id });
 
   await audit({ actor: "estudiante", action: "mensaje.guardado", entity: "memories", entityId: memory.id, ip, detail: { studentId, status } });
+  revalidatePath("/", "layout");
   revalidatePath("/mensajes");
   revalidatePath("/admin/moderacion");
   return { ok: true, status };

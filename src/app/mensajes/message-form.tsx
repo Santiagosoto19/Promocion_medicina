@@ -2,7 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
+import { celebrar } from "@/lib/celebrar";
 import { saveMessage } from "./actions";
 
 type StudentOption = { id: string; fullName: string; nickname: string | null };
@@ -13,6 +15,7 @@ export function MessageForm({ students }: { students: StudentOption[] }) {
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
   const { avisar } = useToast();
+  const router = useRouter();
   const [message, setMessage] = useState<{ type: "ok" | "error"; text: string } | null>(null);
 
   async function submit() {
@@ -25,6 +28,8 @@ export function MessageForm({ students }: { students: StudentOption[] }) {
     setRecipient("");
     setMessage({ type: "ok", text: result.status === "pending" ? "¡Mensaje enviado! Aparecerá cuando el admin lo apruebe." : "¡Mensaje publicado!" });
     avisar(result.status === "pending" ? "Mensaje enviado: lo revisa el admin" : "¡Mensaje publicado en el muro!", "ok");
+    void celebrar();
+    router.refresh();
   }
 
   const field = "bb-input";

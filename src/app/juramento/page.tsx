@@ -2,7 +2,7 @@ import { PageShell } from "@/components/page-shell";
 import { getSettings } from "@/lib/access";
 import { OathReveal } from "./oath-reveal";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 10;
 
 export default async function JuramentoPage() {
   const settings = await getSettings();

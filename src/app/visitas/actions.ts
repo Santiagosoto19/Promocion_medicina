@@ -31,6 +31,7 @@ export async function signGuestbook(input: unknown): Promise<{ ok: true; status:
     .values({ authorName: parsed.data.authorName, relationship: parsed.data.relationship || null, body: parsed.data.body, status: "pending" })
     .returning({ id: guestbook.id });
   await audit({ actor: "invitado", action: "visita.guardada", entity: "guestbook", entityId: row.id, ip });
+  revalidatePath("/", "layout");
   revalidatePath("/admin/visitas");
   return { ok: true, status: "pending" };
 }

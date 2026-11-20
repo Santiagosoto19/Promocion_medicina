@@ -32,6 +32,7 @@ export async function addEvent(_prev: EventState, formData: FormData): Promise<E
     .values({ ...parsed.data, eventDate: parsed.data.eventDate || null, description: parsed.data.description || null })
     .returning({ id: timelineEvents.id });
   await audit({ actor, action: "linea.agregado", entity: "timeline_events", entityId: created.id, detail: { title: parsed.data.title } });
+  revalidatePath("/", "layout");
   revalidatePath("/linea");
   revalidatePath("/admin/linea");
   return { ok: true };
@@ -41,6 +42,7 @@ export async function deleteEvent(id: string): Promise<void> {
   const actor = await adminActor();
   const [removed] = await db.delete(timelineEvents).where(eq(timelineEvents.id, id)).returning({ title: timelineEvents.title });
   await audit({ actor, action: "linea.eliminado", entity: "timeline_events", entityId: id, detail: { title: removed?.title } });
+  revalidatePath("/", "layout");
   revalidatePath("/linea");
   revalidatePath("/admin/linea");
 }

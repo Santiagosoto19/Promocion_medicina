@@ -56,6 +56,7 @@ export async function toggleReaction(input: unknown): Promise<ReactionResult> {
     .from(reactions)
     .where(and(eq(reactions.memoryId, memoryId), eq(reactions.emoji, emoji)));
 
+  revalidatePath("/", "layout");
   revalidatePath("/galeria");
   return { ok: true, active, count: Number(total) };
 }

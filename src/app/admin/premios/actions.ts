@@ -19,6 +19,7 @@ export async function addAward(_prev: AwardState, formData: FormData): Promise<A
   if (!parsed.success) return { error: "Escribe el nombre de la categoría." };
   const [row] = await db.insert(awards).values({ title: parsed.data.title, description: parsed.data.description || null }).returning({ id: awards.id });
   await audit({ actor, action: "premio.creado", entity: "awards", entityId: row.id, detail: { title: parsed.data.title } });
+  revalidatePath("/", "layout");
   revalidatePath("/premios");
   revalidatePath("/admin/premios");
   return { ok: true };
@@ -29,6 +30,7 @@ export async function setAwardStatus(id: string, status: "open" | "closed" | "re
   const actor = await adminActor();
   await db.update(awards).set({ status }).where(eq(awards.id, id));
   await audit({ actor, action: "premio.estado", entity: "awards", entityId: id, detail: { status } });
+  revalidatePath("/", "layout");
   revalidatePath("/premios");
   revalidatePath("/admin/premios");
 }

@@ -5,7 +5,7 @@ import { memories, students } from "@/db/schema";
 import { strokesToPath } from "@/lib/strokes";
 import { FirmaClient } from "./firma-client";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 10;
 
 // La bata con las firmas aprobadas. Cada firma se dibuja con sus trazos reales.
 export default async function FirmaPage() {

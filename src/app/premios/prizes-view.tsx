@@ -1,6 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/toast";
+import { celebrar } from "@/lib/celebrar";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { castVote } from "./actions";
 
@@ -13,6 +16,8 @@ export function PrizesView({ awards, students }: { awards: Award[]; students: St
   const [voted, setVoted] = useState<Record<string, boolean>>({});
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
+  const { avisar } = useToast();
+  const router = useRouter();
 
   async function vote(awardId: string) {
     if (!voter) return setMsg({ ok: false, text: "Elige tu nombre primero." });
@@ -24,6 +29,9 @@ export function PrizesView({ awards, students }: { awards: Award[]; students: St
     if (!r.ok) return setMsg({ ok: false, text: r.error });
     setVoted((v) => ({ ...v, [awardId]: true }));
     setMsg({ ok: true, text: "¡Voto registrado!" });
+    avisar("¡Voto registrado!", "ok");
+    void celebrar();
+    router.refresh();
   }
 
   const field = "bb-input";

@@ -19,6 +19,7 @@ export async function addTeacher(_prev: TeacherState, formData: FormData): Promi
   if (!parsed.success) return { error: "Escribe el nombre del profesor." };
   const [row] = await db.insert(teachers).values({ name: parsed.data.name, subject: parsed.data.subject || null }).returning({ id: teachers.id });
   await audit({ actor, action: "profesor.agregado", entity: "teachers", entityId: row.id, detail: { name: parsed.data.name } });
+  revalidatePath("/", "layout");
   revalidatePath("/profesores");
   revalidatePath("/admin/profesores");
   return { ok: true };
@@ -28,6 +29,7 @@ export async function removeTeacher(id: string): Promise<void> {
   const actor = await adminActor();
   const [removed] = await db.delete(teachers).where(eq(teachers.id, id)).returning({ name: teachers.name });
   await audit({ actor, action: "profesor.eliminado", entity: "teachers", entityId: id, detail: { name: removed?.name } });
+  revalidatePath("/", "layout");
   revalidatePath("/profesores");
   revalidatePath("/admin/profesores");
 }

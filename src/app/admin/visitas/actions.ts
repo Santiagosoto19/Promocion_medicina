@@ -11,6 +11,7 @@ export async function setGuestStatus(id: string, status: "approved" | "hidden"):
   const actor = await adminActor();
   await db.update(guestbook).set({ status }).where(eq(guestbook.id, id));
   await audit({ actor, action: "visita.estado", entity: "guestbook", entityId: id, detail: { status } });
+  revalidatePath("/", "layout");
   revalidatePath("/visitas");
   revalidatePath("/admin/visitas");
 }

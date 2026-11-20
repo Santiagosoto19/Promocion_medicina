@@ -53,6 +53,7 @@ export async function saveSignature(input: unknown): Promise<SignResult> {
     .returning({ id: memories.id });
 
   await audit({ actor: "estudiante", action: "firma.guardada", entity: "memories", entityId: memory.id, ip, detail: { studentId, status } });
+  revalidatePath("/", "layout");
   revalidatePath("/firma");
   revalidatePath("/admin/moderacion");
   return { ok: true, status };

@@ -6,7 +6,7 @@ import { capsuleLetters, students } from "@/db/schema";
 import { getSettings } from "@/lib/access";
 import { CapsuleForm } from "./capsule-form";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 10;
 
 // Las cartas no se consultan hasta la fecha de apertura: se valida aquí, en el servidor.
 export default async function CapsulaPage() {

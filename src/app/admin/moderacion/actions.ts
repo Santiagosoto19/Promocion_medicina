@@ -47,6 +47,7 @@ export async function deleteMemory(id: string): Promise<{ ok: boolean; error?: s
     entityId: id,
     detail: { type: current.type, studentId: current.studentId, storage: current.storage },
   });
+  revalidatePath("/", "layout");
   revalidatePath("/");
   revalidatePath("/galeria");
   revalidatePath("/admin/moderacion");
@@ -70,6 +71,7 @@ export async function setMemoryStatus(id: string, status: "approved" | "hidden" 
     entityId: id,
     detail: { from: current.status, to: status },
   });
+  revalidatePath("/", "layout");
   revalidatePath("/");
   revalidatePath("/admin/moderacion");
 }

@@ -5,7 +5,7 @@ import { db } from "@/db";
 import { memories, students } from "@/db/schema";
 import { MessageForm } from "./message-form";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 10;
 
 // Rotación y desplazamiento estables por recuerdo, para que no cambien entre visitas.
 function note(id: string) {

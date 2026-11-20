@@ -5,7 +5,7 @@ import { guestbook } from "@/db/schema";
 import { getSettings } from "@/lib/access";
 import { GuestbookForm } from "./guestbook-form";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 10;
 
 export default async function VisitasPage() {
   const settings = await getSettings();

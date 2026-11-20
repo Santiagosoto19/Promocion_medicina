@@ -1,6 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/toast";
+import { celebrar } from "@/lib/celebrar";
 import { useState } from "react";
 import { saveCapsuleLetter } from "./actions";
 
@@ -11,6 +13,7 @@ export function CapsuleForm({ students }: { students: { id: string; fullName: st
   const [body, setBody] = useState("");
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  const { avisar } = useToast();
 
   async function submit() {
     if (!studentId) return setMsg({ ok: false, text: "Elige tu nombre primero." });
@@ -19,7 +22,10 @@ export function CapsuleForm({ students }: { students: { id: string; fullName: st
     setBusy(false);
     if (!r.ok) return setMsg({ ok: false, text: r.error });
     setBody("");
-    setMsg({ ok: true, text: r.status === "pending" ? "Carta sellada. La revisará el admin antes de guardarla." : "¡Carta sellada!" });
+    const texto = r.status === "pending" ? "Carta sellada. La revisará el admin antes de guardarla." : "¡Carta sellada!";
+    setMsg({ ok: true, text: texto });
+    avisar(texto, "ok");
+    void celebrar();
   }
 
   return (

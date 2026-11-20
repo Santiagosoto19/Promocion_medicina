@@ -4,7 +4,7 @@ import { awardVotes, awards, students } from "@/db/schema";
 import { PageShell } from "@/components/page-shell";
 import { PrizesView } from "./prizes-view";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 10;
 
 export default async function PremiosPage() {
   const [allAwards, list, tally] = await Promise.all([

@@ -5,7 +5,7 @@ import { getSettings } from "@/lib/access";
 import { imageUrl } from "@/lib/image-sizes";
 import { PrintButton } from "./print-button";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 10;
 
 // Libro para imprimir o guardar como PDF desde el navegador (Ctrl+P → Guardar como PDF).
 export default async function LibroPage() {
