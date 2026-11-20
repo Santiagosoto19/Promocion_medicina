@@ -16,15 +16,30 @@ const PESTANAS: { valor: Tipo; label: string }[] = [
 export function GaleriaFiltrable({ items, estudiantes }: { items: GaleriaItem[]; estudiantes: { id: string; fullName: string }[] }) {
   const [tipo, setTipo] = useState<Tipo>("");
   const [alumno, setAlumno] = useState("");
+  const [busqueda, setBusqueda] = useState("");
 
-  const filtrados = useMemo(
-    () => items.filter((i) => (!tipo || i.type === tipo) && (!alumno || i.studentId === alumno)),
-    [items, tipo, alumno],
-  );
+  const filtrados = useMemo(() => {
+    const texto = busqueda.trim().toLowerCase();
+    return items.filter((i) => {
+      if (tipo && i.type !== tipo) return false;
+      if (alumno && i.studentId !== alumno) return false;
+      if (!texto) return true;
+      const donde = [i.studentName, i.nickname, i.title, i.body].filter(Boolean).join(" ").toLowerCase();
+      return donde.includes(texto);
+    });
+  }, [items, tipo, alumno, busqueda]);
 
   return (
     <>
       <div className="mt-6 flex flex-wrap items-center justify-end gap-2">
+        <input
+          type="search"
+          aria-label="Buscar en la galería"
+          placeholder="Buscar por nombre, título o texto…"
+          value={busqueda}
+          onChange={(e) => setBusqueda(e.target.value)}
+          className="bb-input !w-auto min-w-0 flex-1 !min-h-10 !py-2 text-sm sm:max-w-xs"
+        />
         <select aria-label="Filtrar por estudiante" value={alumno} onChange={(e) => setAlumno(e.target.value)} className="bb-input !w-auto !min-h-10 !py-2 text-sm">
           <option value="">Todos los estudiantes</option>
           {estudiantes.map((s) => (

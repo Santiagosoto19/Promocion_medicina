@@ -14,6 +14,7 @@ import { audioSrc, videoPoster, videoSrc } from "@/lib/cloudinary-url";
 import { imageUrl } from "@/lib/image-sizes";
 import { toggleReaction } from "./actions";
 import { REACTION_EMOJIS } from "@/lib/reactions";
+import { CompartirBoton } from "@/components/compartir-boton";
 
 export type GaleriaItem = {
   id: string;
@@ -187,7 +188,7 @@ export function GaleriaView({ items }: { items: GaleriaItem[] }) {
       </>
     );
     return (
-      <div key={it.id} data-reveal className="mb-10">
+      <div key={it.id} id={`recuerdo-${it.id}`} data-reveal className="mb-10 scroll-mt-24">
         {it.type === "photo" && it.path ? (
           <button type="button" onClick={() => setIndex(viewIndex)} className="block w-full text-left" aria-label="Ver foto">
             <Polaroid id={it.id} caption={caption}>
@@ -215,7 +216,10 @@ export function GaleriaView({ items }: { items: GaleriaItem[] }) {
         <div className="mt-4 space-y-2 px-1">
           {it.title && <p className="font-display text-xl text-secondary">{it.title}</p>}
           {it.body && <p className="text-sm text-muted">{it.body}</p>}
-          <Reactions item={it} />
+          <div className="flex flex-wrap items-center gap-3">
+            <Reactions item={it} />
+            <CompartirBoton ruta={`/galeria#recuerdo-${it.id}`} titulo={it.title ?? `Recuerdo de ${it.studentName}`} />
+          </div>
         </div>
       </div>
     );

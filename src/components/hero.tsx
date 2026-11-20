@@ -5,6 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { InlineEdit } from "@/components/inline-edit";
 import { Columna, Fronton, Laurel } from "@/components/clasico/ornamentos";
+import { useEsAdmin } from "@/lib/use-es-admin";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,7 +19,6 @@ const INTERVALO_FOTOS = 3500;
 export function Hero({
   title,
   subtitle,
-  editable,
   saveTitle,
   saveSubtitle,
   photos,
@@ -26,13 +26,14 @@ export function Hero({
 }: {
   title: string;
   subtitle: string;
-  editable: boolean;
   saveTitle: (value: string) => Promise<{ ok: boolean; error?: string }>;
   saveSubtitle: (value: string) => Promise<{ ok: boolean; error?: string }>;
   photos: Photo[];
   children: ReactNode;
 }) {
   const ref = useRef<HTMLElement>(null);
+  // Edición solo para el admin con sesión: se decide en el navegador, así la portada puede guardarse en caché.
+  const editable = useEsAdmin();
   // Índice de la primera foto visible; avanza solo y muestra todas las aprobadas, en turnos.
   const [inicio, setInicio] = useState(0);
 

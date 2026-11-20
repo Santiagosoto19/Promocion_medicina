@@ -19,12 +19,13 @@ import { tiltFor } from "@/lib/tilt";
 import { IntroBook } from "@/components/intro-book";
 import { MemoryMedia } from "@/components/memory-media";
 import { getSettings } from "@/lib/access";
-import { isAdminRequest } from "@/lib/admin-session";
+import { AvisoEdicion } from "@/components/aviso-edicion";
 import { playlistEmbed } from "@/lib/playlist";
 import { imageUrl } from "@/lib/image-sizes";
 import { saveInlineText } from "@/app/admin/contenido/inline-actions";
 
-export const dynamic = "force-dynamic";
+// Sin cookies en el servidor: la portada se guarda en caché. La edición del admin se activa en el navegador.
+export const revalidate = 10;
 
 // Si el admin no ha fijado la fecha, se usa el 5 de diciembre de 2026 a las 8:00 a. m. (Colombia).
 const DEFAULT_CEREMONY = "2026-12-05T08:00:00-05:00";
@@ -45,9 +46,8 @@ const NAV = [
 ];
 
 export default async function HomePage() {
-  const [settings, editable, [{ total: nRecuerdos }], [{ total: nEstudiantes }]] = await Promise.all([
+  const [settings, [{ total: nRecuerdos }], [{ total: nEstudiantes }]] = await Promise.all([
     getSettings(),
-    isAdminRequest(),
     db.select({ total: count() }).from(memories).where(eq(memories.status, "approved")),
     db.select({ total: count() }).from(studentsTable),
   ]);
@@ -91,15 +91,10 @@ export default async function HomePage() {
       <IntroBook title={title} fotos={fotosIntro} />
       <MedicalFloaters />
       <div className="mx-auto max-w-5xl">
-        {editable && (
-          <p className="mb-4 rounded-lg border border-gold/50 bg-gold/10 px-3 py-2 text-center text-xs text-secondary">
-            Modo edición: haz clic en el título o el subtítulo para cambiarlos. Se guardan al salir del campo.
-          </p>
-        )}
+        <AvisoEdicion />
         <Hero
           title={title}
           subtitle={subtitle}
-          editable={editable}
           saveTitle={saveInlineText.bind(null, "heroTitle")}
           saveSubtitle={saveInlineText.bind(null, "heroSubtitle")}
           photos={floaters}

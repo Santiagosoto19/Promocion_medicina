@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { guestbook } from "@/db/schema";
 import { requireAdmin } from "@/lib/admin-session";
 import { setGuestStatus } from "./actions";
+import { BorrarVisita } from "./borrar-visita";
 
 export default async function VisitasAdmin() {
   await requireAdmin();
@@ -26,6 +27,7 @@ export default async function VisitasAdmin() {
                 <div className="mt-3 flex gap-2">
                   <form action={setGuestStatus.bind(null, g.id, "approved")}><button className="rounded-lg bg-primary px-3 py-1.5 text-sm text-white">Aprobar</button></form>
                   <form action={setGuestStatus.bind(null, g.id, "hidden")}><button className="rounded-lg border border-line px-3 py-1.5 text-sm">Ocultar</button></form>
+                  <BorrarVisita id={g.id} />
                 </div>
               </li>
             ))}
@@ -37,9 +39,12 @@ export default async function VisitasAdmin() {
             {others.map((g) => (
               <li key={g.id} className="flex items-center justify-between gap-4 px-4 py-3">
                 <span className="bb-label">{g.authorName} · <span className="text-muted">{g.status === "approved" ? "publicado" : "oculto"}</span></span>
-                <form action={setGuestStatus.bind(null, g.id, g.status === "approved" ? "hidden" : "approved")}>
-                  <button className="rounded-lg border border-line px-3 py-1 text-sm">{g.status === "approved" ? "Ocultar" : "Publicar"}</button>
-                </form>
+                <div className="flex items-center gap-2">
+                  <form action={setGuestStatus.bind(null, g.id, g.status === "approved" ? "hidden" : "approved")}>
+                    <button className="rounded-lg border border-line px-3 py-1 text-sm">{g.status === "approved" ? "Ocultar" : "Publicar"}</button>
+                  </form>
+                  <BorrarVisita id={g.id} />
+                </div>
               </li>
             ))}
           </ul>
