@@ -1,0 +1,48 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1795126373590,
+      "tag": "0000_thankful_zeigeist",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1795129855089,
+      "tag": "0001_quitar_codigo_acceso",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795130553386,
+      "tag": "0002_reacciones",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1795130666085,
+      "tag": "0003_modo_ceremonia",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795131039884,
+      "tag": "0004_mosaico_linea_juramento",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1795131323635,
+      "tag": "0005_extras_fase6",
+      "breakpoints": true
+    }
+  ]
+}

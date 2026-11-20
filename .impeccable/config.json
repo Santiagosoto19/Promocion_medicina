@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/app/globals.css"
+        ],
+        "createdAt": "2026-11-20T05:43:58.871Z",
+        "reason": "Usuario confirmó: brillo dorado gold-shine del título es intencional (diseño de marca)"
+      }
+    ]
+  }
+}

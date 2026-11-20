@@ -1,0 +1,379 @@
+@import "tailwindcss";
+
+/* Tokens del tema. El admin podrá cambiarlos en vivo (fase 5) sobrescribiendo estas variables. */
+:root {
+  --bb-bg: #ffffff;
+  --bb-surface: #f7fafc;
+  --bb-primary: #0e7c86;
+  --bb-secondary: #1e3a8a;
+  --bb-gold: #c9a227;
+  --bb-rose: #f4a7b9;
+  --bb-text: #1f2937;
+  --bb-muted: #6b7280;
+  --bb-line: #e5e7eb;
+  --bb-font-display: var(--font-fraunces), Georgia, serif;
+  --bb-font-body: var(--font-manrope), system-ui, sans-serif;
+  --bb-font-hand: var(--font-caveat), cursive;
+  --bb-font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+
+@theme inline {
+  --color-paper: var(--bb-bg);
+  --color-surface: var(--bb-surface);
+  --color-primary: var(--bb-primary);
+  --color-secondary: var(--bb-secondary);
+  --color-gold: var(--bb-gold);
+  --color-rose: var(--bb-rose);
+  --color-text: var(--bb-text);
+  --color-muted: var(--bb-muted);
+  --color-line: var(--bb-line);
+  --font-display: var(--bb-font-display);
+  --font-body: var(--bb-font-body);
+  --font-hand: var(--bb-font-hand);
+  --font-mono: var(--bb-font-mono);
+  --font-sans: var(--bb-font-body);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bb-bg);
+  color: var(--bb-text);
+  font-family: var(--bb-font-body);
+}
+
+/* Respeta a quien pide menos movimiento. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bb-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ——— Estética de libro de recuerdos ——— */
+
+/* Grano casi invisible sobre todo el fondo blanco (3 %). */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Polaroid: borde blanco grueso, sombra de tres capas y rotación propia por foto (--rot). */
+.polaroid {
+  --rot: 0deg;
+  background: #ffffff;
+  padding: 12px 12px 14px;
+  transform: rotate(var(--rot));
+  box-shadow:
+    0 1px 2px rgba(31, 41, 55, 0.08),
+    0 8px 24px rgba(31, 41, 55, 0.1),
+    0 24px 60px rgba(31, 41, 55, 0.12);
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.polaroid-caption {
+  padding-top: 10px;
+  min-height: 36px;
+}
+.polaroid:hover,
+.polaroid:focus-within {
+  transform: translateY(-8px) scale(1.03) rotate(0deg);
+  box-shadow:
+    0 2px 4px rgba(31, 41, 55, 0.1),
+    0 16px 36px rgba(31, 41, 55, 0.14),
+    0 36px 80px rgba(31, 41, 55, 0.16);
+}
+
+/* Cinta washi semitransparente, en una esquina. */
+.washi {
+  position: absolute;
+  width: 92px;
+  height: 26px;
+  opacity: 0.85;
+  mix-blend-mode: multiply;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(244, 167, 185, 0.55) 0 8px,
+    rgba(255, 255, 255, 0.35) 8px 16px
+  );
+  pointer-events: none;
+}
+
+/* Título con brillo dorado que recorre el texto. */
+.gold-shine {
+  background-image: linear-gradient(110deg, var(--bb-secondary) 42%, var(--bb-gold) 50%, var(--bb-secondary) 58%);
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: bb-shine 7s linear infinite;
+}
+@keyframes bb-shine {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+/* Halo suave de luz detrás de las secciones clave. */
+.glow-teal {
+  background: radial-gradient(closest-side, rgba(14, 124, 134, 0.09), transparent 70%);
+}
+.glow-gold {
+  background: radial-gradient(closest-side, rgba(201, 162, 39, 0.1), transparent 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gold-shine {
+    animation: none;
+  }
+  .polaroid:hover {
+    transform: rotate(var(--rot));
+  }
+}
+
+/* ——— Tarjetas y títulos del nuevo diseño ——— */
+.paper-card {
+  border-radius: 1rem;
+  border: 1px solid var(--bb-line);
+  background: #ffffff;
+  box-shadow:
+    0 1px 2px rgba(31, 41, 55, 0.06),
+    0 8px 24px rgba(31, 41, 55, 0.08),
+    0 24px 60px rgba(31, 41, 55, 0.1);
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.paper-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 2px 4px rgba(31, 41, 55, 0.08),
+    0 16px 36px rgba(31, 41, 55, 0.12),
+    0 36px 80px rgba(31, 41, 55, 0.14);
+}
+.page-title {
+  background-image: linear-gradient(110deg, var(--bb-secondary) 42%, var(--bb-gold) 50%, var(--bb-secondary) 58%);
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: bb-shine 9s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-title {
+    animation: none;
+    color: var(--bb-secondary);
+    background: none;
+  }
+}
+
+/* ——— Sistema base: botones, ripple y ECG ——— */
+@keyframes bb-ripple {
+  from { transform: scale(0); opacity: 0.45; }
+  to { transform: scale(4); opacity: 0; }
+}
+@keyframes bb-sweep {
+  0%, 60% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+@keyframes bb-ecg-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes bb-ecg-beat {
+  0%, 100% { stroke-width: 2; }
+  10% { stroke-width: 3; }
+  20% { stroke-width: 2; }
+}
+.ecg-line {
+  fill: none;
+  stroke: var(--bb-primary);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: bb-ecg-draw 1.6s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards, bb-ecg-beat 2.4s ease-in-out 2s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ecg-line { stroke-dashoffset: 0; animation: none; }
+}
+
+@keyframes bb-fall {
+  from { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+  to { transform: translateY(110vh) rotate(360deg); opacity: 0.2; }
+}
+/* Modo "animaciones suaves" desde el pie de página. */
+html.anim-soft *,
+html.anim-soft *::before,
+html.anim-soft *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* ——— Decoración médica ——— */
+@keyframes bb-float {
+  0%, 100% { transform: translateY(0) rotate(var(--r0, 0deg)); }
+  50% { transform: translateY(-10px) rotate(calc(var(--r0, 0deg) + 6deg)); }
+}
+@keyframes bb-spin-slow {
+  to { transform: rotate(360deg); }
+}
+@keyframes bb-heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.12); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.08); }
+}
+.med-float { animation: bb-float 7s ease-in-out infinite; }
+.med-spin { animation: bb-spin-slow 24s linear infinite; }
+.med-beat { animation: bb-heartbeat 2.4s ease-in-out infinite; transform-origin: center; }
+@media (prefers-reduced-motion: reduce) {
+  .med-float, .med-spin, .med-beat { animation: none; }
+}
+
+/* ——— Formularios ——— */
+.bb-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--bb-secondary);
+}
+.bb-hint {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 13px;
+  color: var(--bb-muted);
+}
+.bb-input {
+  display: block;
+  width: 100%;
+  min-height: 3rem;
+  border-radius: 14px;
+  border: 1.5px solid #dde4ea;
+  background: #ffffff;
+  padding: 0.75rem 1rem;
+  font-size: 16px; /* evita el zoom automático en iPhone */
+  line-height: 1.4;
+  color: var(--bb-text);
+  box-shadow: 0 1px 2px rgba(15, 42, 58, 0.05);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.bb-input::placeholder {
+  color: #aeb7c0;
+}
+.bb-input:hover {
+  border-color: #b8c7d1;
+}
+.bb-input:focus {
+  outline: none;
+  border-color: var(--bb-primary);
+  box-shadow: 0 0 0 3px rgba(14, 124, 134, 0.14);
+}
+.bb-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+select.bb-input {
+  appearance: none;
+  padding-right: 2.75rem;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%230E7C86' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  cursor: pointer;
+}
+textarea.bb-input {
+  min-height: 7rem;
+  resize: vertical;
+  line-height: 1.55;
+}
+.bb-count {
+  display: block;
+  margin-top: 0.4rem;
+  text-align: right;
+  font-size: 13px;
+  color: var(--bb-muted);
+  font-variant-numeric: tabular-nums;
+}
+.bb-section {
+  display: grid;
+  gap: 1.25rem;
+}
+
+/* ——— Notificaciones, dígitos y partículas ——— */
+@keyframes bb-toast-in {
+  from { opacity: 0; transform: translate(-50%, 24px) scale(0.96); }
+  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+@keyframes bb-digit-flip {
+  0% { transform: rotateX(-90deg); opacity: 0; }
+  100% { transform: rotateX(0deg); opacity: 1; }
+}
+@keyframes bb-particle {
+  0% { transform: translate(0, 0) scale(0.6); opacity: 1; }
+  100% { transform: translate(var(--px, 0px), var(--py, -60px)) scale(1.2); opacity: 0; }
+}
+.digit-flip { animation: bb-digit-flip 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; transform-origin: 50% 100%; }
+.particle { animation: bb-particle 1.1s ease-out forwards; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .digit-flip, .particle { animation: none; }
+}
+
+/* ——— Ajustes de legibilidad y tacto (revisión visual) ——— */
+.text-xs { font-size: 0.8125rem; line-height: 1.25rem; }      /* 13 px mínimo */
+.text-\[10px\] { font-size: 0.6875rem; }                       /* 11 px mínimo */
+button, input, select, textarea { font-family: inherit; }
+
+@keyframes bb-beat {
+  0%, 100% { transform: scale(1); }
+  8% { transform: scale(1.08); }
+  16% { transform: scale(1); }
+  24% { transform: scale(1.05); }
+  32% { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bb-beat-off { animation: none; }
+}
+
+/* ——— Foco visible con teclado ——— */
+.bf-firma:focus-visible rect {
+  stroke: #c9a227;
+  stroke-width: 2;
+  stroke-dasharray: 4 3;
+}
